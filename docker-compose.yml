@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  depth-camera:
+    build: .
+    container_name: depth-camera
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    restart: unless-stopped
