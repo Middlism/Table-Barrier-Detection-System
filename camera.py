@@ -73,7 +73,7 @@ def estimate_stereo_depth(left_img, right_img):
     return depth_map, disparity_normalized
 
 # Configure camera URL
-url = "http://192.168.1.100:8080/shot.jpg"
+url = "http://192.168.1.106:8080/shot.jpg"
 
 # Choose depth estimation method (comment/uncomment as needed)
 USE_MIDAS = True  # Set to False if you want to use stereo instead
