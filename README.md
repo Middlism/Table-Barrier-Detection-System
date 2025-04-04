@@ -17,7 +17,7 @@ The easiest way to run this project is using Docker:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/Table-Barrier-Detection-System.git
+git clone https://github.com/Middlism/Table-Barrier-Detection-System.git
 cd Table-Barrier-Detection-System
 
 # Build and run with Docker Compose
