@@ -31,7 +31,7 @@ Before running the application, you need to:
 1. Update the camera URL in `camera.py` to point to your IP camera:
 
    ```python
-   url = "http://192.168.1.100:8080/shot.jpg"  # Replace with your camera IP
+   url = "IP Address on IP Camera/shot.jpg"  
    ```
 
 2. Choose your depth estimation method by updating these flags in `camera.py`:
