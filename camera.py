@@ -8,6 +8,16 @@ import torch
 # Load YOLO model for object detection
 model = YOLO("yolov8n.pt")
 
+def filter_cup_detections(results, model):
+    cups = []
+    for result in results:
+        for box in result.boxes:
+            cls_id = int(box.cls[0])
+            label = model.names(cls_id)
+            if "cup" in label.lower() or glass in label.lower():
+                cups.append(box)
+    return cups
+
 # Initialize MiDaS model for monocular depth estimation
 def initialize_midas():
     # Load MiDaS model (small version for faster inference)
