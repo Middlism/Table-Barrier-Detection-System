@@ -1,93 +1,68 @@
-# Table Barrier Detection System
+# Cup Liquid Detector
 
-This project uses YOLOv8 for object detection combined with depth estimation to detect objects and determine their distance from the camera.
+A computer vision system that detects cups and identifies liquids inside them using depth estimation, object detection, and color segmentation.
 
 ## Features
 
-- Object detection using YOLOv8
-- Depth estimation using either:
-  - MonoDepth (MiDaS) for single-camera setups
-  - Stereo depth estimation for dual-camera setups
-- Real-time distance calculation for detected objects
-- Support for IP cameras (including smartphone cameras via apps like IP Webcam)
-
-## Quick Start with Docker
-
-The easiest way to run this project is using Docker:
-
-```bash
-# Clone the repository
-git clone https://github.com/Middlism/Table-Barrier-Detection-System.git
-cd Table-Barrier-Detection-System
-
-# Build and run with Docker Compose
-docker-compose up
-```
-
-## Configuration
-
-Before running the application, you need to:
-
-1. Update the camera URL in `camera.py` to point to your IP camera:
-
-   ```python
-   url = "IP Address on IP Camera/shot.jpg"  
-   ```
-
-2. Choose your depth estimation method by updating these flags in `camera.py`:
-   ```python
-   USE_MIDAS = True   # Set to False if you want to use stereo instead
-   USE_STEREO = False  # Set to True if you have calibrated stereo cameras
-   ```
-
-## Running Without Docker
-
-If you prefer to run without Docker:
-
-1. Install the required packages:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. Run the application:
-   ```bash
-   python camera.py
-   ```
-
-## Using with a Smartphone Camera
-
-1. Install an IP Webcam app on your smartphone (like "IP Webcam" for Android)
-2. Start the server on your phone and note the IP address
-3. Update the URL in the code to match your phone's IP address
-
-## Display Controls
-
-- Press ESC to exit the application
-- The depth map is displayed in the top-left corner of the video feed
-- Object labels include the object name, confidence score, and estimated distance
-
-## Customization
-
-- The distance calculation formulas in the code need calibration for accurate measurements with your specific camera setup
-- You can adjust the YOLO model by changing `yolov8n.pt` to other YOLOv8 models for different accuracy/speed tradeoffs
+- Detects cups, glasses, and bottles using YOLOv8
+- Estimates liquid type (water, coffee, tea) via color analysis
+- Calculates fill levels for detected containers
+- Measures approximate distance to objects
+- Visualizes depth information with color mapping
+- Optional segmentation using Segment Anything Model (SAM)
 
 ## Requirements
 
 - Python 3.8+
-- OpenCV
 - PyTorch
-- Ultralytics YOLOv8
+- OpenCV
+- Ultralytics (YOLOv8)
 - NumPy
-- Requests
-- Imutils
+- imutils
+- Requests (for IP camera support)
+- PIL
 
-## Running on Linux
+Optional:
 
-When running on Linux with Docker, you may need to allow the Docker container to access your display:
+- Segment Anything Model (for improved segmentation)
+
+## Installation
 
 ```bash
-xhost +local:docker
+pip install torch opencv-python ultralytics numpy imutils requests pillow
+# Optional for SAM functionality
+pip install segment-anything
 ```
 
-Then run with docker-compose as usual.
+## Usage
+
+Run the main script to start detection:
+
+```bash
+python liquid_detector.py
+```
+
+The program will:
+
+1. Try to connect to an IP camera (if available)
+2. Fall back to webcam if no IP camera is detected
+3. Display a window showing detections with bounding boxes, liquid type, fill level, and distance
+
+## How It Works
+
+1. **Object Detection**: YOLOv8 identifies cups and containers in the frame
+2. **Depth Estimation**: MiDaS model creates a depth map to estimate distance
+3. **Cup Segmentation**: Either SAM or conventional methods create a mask of the cup
+4. **Liquid Detection**: HSV-based color segmentation identifies liquid type and fill level
+5. **Visualization**: Results are displayed with colored overlays and text annotations
+
+## Performance Optimizations
+
+- Caching detection results to reduce processing overhead
+- Dynamic model selection based on available resources
+- Spatial attention mechanism to focus processing on relevant regions
+- Reduced resolution for faster detection cycles
+
+## License
+
+[MIT License](LICENSE)
